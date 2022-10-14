@@ -1,0 +1,5 @@
+import axios from "axios";
+
+axios.defaults.baseURL = "https://antonio-moments-drf-api.herokuapp.com/"
+axios.defaults.headers.post['Cotent-Type'] = 'multipart/form-data'
+axios.defaults.withCredentials = true
