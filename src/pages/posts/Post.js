@@ -43,6 +43,7 @@ const Post = (props) => {
   };
 
   const handleUnlike = async () => {
+    console.log("Button works")
     try {
       await axiosRes.delete(`/likes/${like_id}/`);
       setPosts((prevPosts) => ({
