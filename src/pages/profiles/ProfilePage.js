@@ -24,17 +24,16 @@ import NoResults from "../../assets/no-results.png"
 
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [profilePosts, setProfilePosts] = useState({ results: []})
+  const [profilePosts, setProfilePosts] = useState({ results: [] });
 
   const currentUser = useCurrentUser();
-  const {id} = useParams();
+  const { id } = useParams();
 
-  const {setProfileData, handleFollow } = useSetProfileData();
+  const { setProfileData, handleFollow } = useSetProfileData();
   const { pageProfile } = useProfileData();
-  
-  const [profile] = pageProfile.results
-  const is_owner = currentUser?.username === profile?.owner;
 
+  const [profile] = pageProfile.results;
+  const is_owner = currentUser?.username === profile?.owner;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,22 +60,22 @@ function ProfilePage() {
     <>
       <Row noGutters className="px-3 text-center">
         <Col lg={3} className="text-lg-left">
-          <Image 
-          className={styles.ProfileImage} 
-          roundedCircle 
-          src={profile?.image} 
+          <Image
+            className={styles.ProfileImage}
+            roundedCircle
+            src={profile?.image}
           />
         </Col>
         <Col lg={6}>
           <h3 className="m-2">{profile?.owner}</h3>
           <Row className="justify-content-center no-gutters">
-            <Col xs={3} className="my-2" >
+            <Col xs={3} className="my-2">
               <div>{profile?.posts_count}</div>
               <div>posts</div>
             </Col>
             <Col xs={3} className="my-2">
               <div>{profile?.followers_count}</div>
-              <div>Followers</div>
+              <div>followers</div>
             </Col>
             <Col xs={3} className="my-2">
               <div>{profile?.following_count}</div>
@@ -85,20 +84,25 @@ function ProfilePage() {
           </Row>
         </Col>
         <Col lg={3} className="text-lg-right">
-          {currentUser && !is_owner && (profile?.following_id ? (
-            <Button
-            className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
-            onClick={() => {}}
-            >
-            unfollow</Button>
-          ) : (
-            <Button 
-            className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
-            onClick={() => handleFollow(profile)}
-            >follow</Button>
-          ))}
+          {currentUser &&
+            !is_owner &&
+            (profile?.following_id ? (
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
+                onClick={() => {}}
+              >
+                unfollow
+              </Button>
+            ) : (
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.Black}`}
+                onClick={() => handleFollow(profile)}
+              >
+                follow
+              </Button>
+            ))}
         </Col>
-        {profile?.content && (<Col className="p-3">{profile.content}</Col>)}
+        {profile?.content && <Col className="p-3">{profile.content}</Col>}
       </Row>
     </>
   );
@@ -110,21 +114,23 @@ function ProfilePage() {
       <hr />
       {profilePosts.results.length ? (
         <InfiniteScroll
-        children={profilePosts.results.map((post) => (
-          <Post key={post.id} {...post} setPosts={setProfilePosts} />
-        ))}
-        dataLength={profilePosts.results.length}
-        loader={<Asset spinner />}
-        hasMore={!!profilePosts.next}
-        next={() => fetchMoreData(profilePosts, setProfilePosts)}
+          children={profilePosts.results.map((post) => (
+            <Post key={post.id} {...post} setPosts={setProfilePosts} />
+          ))}
+          dataLength={profilePosts.results.length}
+          loader={<Asset spinner />}
+          hasMore={!!profilePosts.next}
+          next={() => fetchMoreData(profilePosts, setProfilePosts)}
         />
       ) : (
-        <Asset 
-        src={NoResults}
-        message={`No results found, ${profile?.owner} hasn't posted yet.`} />
+        <Asset
+          src={NoResults}
+          message={`No results found, ${profile?.owner} hasn't posted yet.`}
+        />
       )}
     </>
   );
+
   return (
     <Row>
       <Col className="py-2 p-0 p-lg-2" lg={8}>
